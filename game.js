@@ -27,14 +27,14 @@ $(".btn").click(function(){
 
 $(document).keypress(function() {
     if (!started) {
-  
-      //3. The h1 title starts out saying "Press A Key to Start", when the game has started, change this to say "Level 0".
-      $("#level-title").text("Level " + level);
-      nextSequence();
-      started = true;
+        
+        //3. The h1 title starts out saying "Press A Key to Start", when the game has started, change this to say "Level 0".
+        $("#level-title").text("Level " + level);
+        nextSequence();
+        started = true;
     }
-  });
-  
+});
+
 
 function nextSequence()
 {
@@ -44,43 +44,44 @@ function nextSequence()
     var randomNumber=Math.floor(Math.random()*4);
     var randomChosenColour = buttonColours[randomNumber];
     gamePattern.push(randomChosenColour);
-   
+    
     $("#"+randomChosenColour).fadeOut(100).fadeIn(100);
     var audio = new Audio('sounds/'+randomChosenColour+'.mp3');
     audio.play();
     
 }
 
-
-// if (randomChosenColour===userChosenColour) {
-//     started=false;
-//     if (!started) {
-  
-//         nextSequence();
-//         started = true;
-//       }
-// }
-// else if (started) {
-    
-//     $("#level-title").text("You Loose");
-// }
-
-
-
 function checkAnswer(currentLevel){
     if(userClickedPattern[currentLevel]===gamePattern[currentLevel]){
         console.log("success");
         if (userClickedPattern.length === gamePattern.length){
-
+            
             setTimeout(function () {
-              nextSequence();
+                nextSequence();
             }, 800);
-    
-          }
-    
+            
+        }
+        
     }
-    else {console.log("failed");
-    
+    else {
+        startOver();
+        
     }
+    
+}
 
+
+function startOver(){
+    $("body").addClass("game-over");
+    $("#level-title").text("Game Over, Press Any Key to Restart");
+    
+    setTimeout(function () {
+        $("body").removeClass("game-over");
+    }, 200);
+    
+    started=false;
+    level=0;
+    gamePattern=[];
+
+    
 }
